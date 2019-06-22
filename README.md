@@ -17,9 +17,13 @@ npm install --save react react-dom
 ```javascript
 npm install --save-dev webpack webpack-dev-server
 ```
-其中，webpack 用于打包构建项目文件，webpack-dev-server 可以为我们提供一个简单的 web 服务器，并且能够实时重新加载，避免了修改文件后，需要重复去build文件查看业务逻辑。在 mac 安装webpack的过程，控制台报错 `Unhandled rejection Error: EACCES: permission denied`，解决方法是直接在本地全局安装 webpack ，`sudo npm install -g webpack`，考虑到此库的代码会被 windows 用户使用，在完成全局安装后，又在此项目中安装了一下 webpack。
-
+其中，webpack 用于打包构建项目文件，webpack-dev-server 可以为我们提供一个简单的 web 服务器，并且能够实时重新加载，避免了修改文件后，需要重复去build文件查看业务逻辑。
 此处安装的 webpack 版本为 v4.35.0，webpack-dev-server 版本为 v3.7.2。
+由于安装的 webpack 为`v4.x`，根据官网提示，需同时安装 `webpack-cli`:
+```javascript
+npm install --save-dev webpack-cli
+```
+安装版本为：`v3.3.4`
 
 #### 4、安装编译插件
 
@@ -61,3 +65,70 @@ npm install --save-dev @babel/cli @babel/core @babel/preset-env @babel/preset-re
 |-- package.json
 |-- README.md
 ```
+## 三、项目启动
+### 1、webpack 配置
+```javascript
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+module.exports = {
+  entry: path.resolve(__dirname, '../src/index.js'),
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: "[name].bundle.js"
+  },
+  module:{
+  },
+  plugins:[
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, '../index.html')
+    })
+  ]
+}
+```
+
+### 2、新建 html 文件
+在项目根目录新建`index.html`文件，body 中只包含`<div id="root"></div>`即可。
+
+### 3、新建入口文件
+在 src 目录下新建 `index.js`，内容如下：
+```javascript
+import React from 'react'
+import ReactDOM from 'react-dom'
+console.log(ReactDOM)
+import App from './App'
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+其中，App.js 为首页入口，内容如下：
+```javascript
+import React, { Component } from 'react'
+class App extends Component {
+  render(){
+    return (
+      <div>这里是首页</div>
+    )
+  }
+}
+export default App
+```
+此时，在`package.json`文件中添加启动脚本`start`指令：`webpack-dev-server --mode development --config build/webpack.config.js --open --hot`，在终端执行`npm start`即可运行此项目。输入指令后，发现控制台报错，且报错位置为`index.js`文件中使用`<App />`的位置，猜测是不识别`react`的语法，查看`webpack.config.js`发现未添加`react
+文件的解析规则，添加`module`:
+```javascript
+module:{
+    rules: [
+      {
+        test:/\.js?$/,
+        exclude: path.resolve(__dirname, '../node_modules'),
+        use:{
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env','@babel/preset-react']
+          }
+        }
+      }
+    ]
+}
+```
+此时重新运行`npm start`，代码编译无报错，且打开浏览器后正常显示`App.js`代码内容。此时一个基本的react项目算是搭建完成。
+
