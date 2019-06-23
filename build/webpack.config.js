@@ -42,12 +42,12 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      'assets':path.resolve(__dirname, './../src/assets'),
-      'pages':path.resolve(__dirname, './../src/pages'),
-      'api':path.resolve(__dirname, './../src/api'),
-      'components':path.resolve(__dirname, './../src/components'),
-      'modules':path.resolve(__dirname, './../src/modules'),
-      'router':path.resolve(__dirname, './../src/router')
+      '@assets':path.resolve(__dirname, './../src/assets'),
+      '@pages':path.resolve(__dirname, './../src/pages'),
+      '@api':path.resolve(__dirname, './../src/api'),
+      '@components':path.resolve(__dirname, './../src/components'),
+      '@modules':path.resolve(__dirname, './../src/modules'),
+      '@router':path.resolve(__dirname, './../src/router')
     }
   }
 }
