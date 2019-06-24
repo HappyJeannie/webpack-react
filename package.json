@@ -20,7 +20,10 @@
   "homepage": "https://github.com/HappyJeannie/webpack-react#readme",
   "dependencies": {
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-router": "^5.0.1",
+    "react-router-dom": "^5.0.1",
+    "reset-css": "^4.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
