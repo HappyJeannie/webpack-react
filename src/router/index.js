@@ -1,19 +1,18 @@
 import React, { Component } from 'react'
-import { Router, Route, Link, Switch, hashHistory } from 'react-router'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
 
 import Home from '@pages/Home'
 import About from '@pages/About'
 
-class RouteConfig extends Component{
+export default class RouteConfig extends Component{
   render () {
     return (
-      <Router history={hashHistory}>
-        <Switch>
+      <Router>
+        <div>
           <Route path="/" exact component={Home} />
           <Route path="/about" component={About} />
-        </Switch>
+        </div>
       </Router>
     )
   }
 }
-export default RouteConfig
